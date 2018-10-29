@@ -8,9 +8,9 @@ All code is contained in `h1b_parse.py`, which is written and tested in Python 2
 
 1. Looks in the semicolon separated input file for the following three fields, which have different names in different versions of the disclosure files:
 
-    - case status (name is `CASE_STATUS` or `STATUS`): a visa application is only counted in our statistics if it is CERTIFIED (case-insensitive). Other cases such as `CERTIFIED-WITHDRAWN`, `DENIED`, etc. are not counted.
-    - state (`WORKSITE_STATE` or `LCA_CASE_WORKLOC1_STATE`): two-letter state code of state where the work is expected to take place.
-    - occupation (`SOC_NAME` or `LCA_CASE_SOC_NAME`): occupation name
+    - case status (name is __`CASE_STATUS`__ or __`STATUS`__): a visa application is only counted in our statistics if the status value is exactly __``CERTIFIED`__ (case-insensitive). Other cases such as __`CERTIFIED-WITHDRAWN`__, __`DENIED`__, etc. are not counted.
+    - state (__`WORKSITE_STATE`__ or __`LCA_CASE_WORKLOC1_STATE`__): two-letter state code of state where the work is expected to take place.
+    - occupation (__`SOC_NAME`__ or __`LCA_CASE_SOC_NAME`__): occupation name
 
     If those fields are not found in the first line of the file, the script will exit.
 
@@ -90,4 +90,4 @@ then rename the file as `h1b_input.csv` in the corresponding test folder.
 
 - The CSV input file is assumed to be well-formed, with no semicolons other than as column separators. If more rigorous input checks are desired, the [csv](https://docs.python.org/2/library/csv.html) library has an easy way to escape separators.
 - To add more field names or change the number of rankings, edit the EDITABLE PARAMETERS section of `h1b_counting.py`. To change the values that are considered certified, edit the marked if statement in `read_h1bfile()`.
-- A progress bar is not included so the code can run quickly (~fewer than 10 seconds for all test cases on a modern computer), but would be an easy addition
+- A progress bar is not included so the code can run quickly (~fewer than 10 seconds for all test cases on a modern computer), but would be an easy addition.
