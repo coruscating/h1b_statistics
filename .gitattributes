@@ -1,0 +1,11 @@
+insight_testsuite/tests/test_FY_2014/input/h1b_input.csv filter=lfs diff=lfs merge=lfs -text
+input/h1b_input.csv filter=lfs diff=lfs merge=lfs -text
+insight_testsuite/tests/test_FY_2015/input/h1b_input.csv filter=lfs diff=lfs merge=lfs -text
+insight_testsuite/tests/test_FY_2016/input/h1b_input.csv filter=lfs diff=lfs merge=lfs -text
+insight_testsuite/tests/test_1/input/h1b_input.csv filter=lfs diff=lfs merge=lfs -text
+output filter=lfs diff=lfs merge=lfs -text
+run.sh filter=lfs diff=lfs merge=lfs -text
+src filter=lfs diff=lfs merge=lfs -text
+README.md filter=lfs diff=lfs merge=lfs -text
+input filter=lfs diff=lfs merge=lfs -text
+insight_testsuite filter=lfs diff=lfs merge=lfs -text
