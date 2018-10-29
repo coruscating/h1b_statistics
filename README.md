@@ -8,9 +8,9 @@ All code is contained in `h1b_parse.py`, which is written and tested in Python 2
 
 1. Looks in the semicolon separated input file for the following three fields, which have different names in different versions of the disclosure files:
 
-    - case status (name is CASE_STATUS or STATUS): a visa application is only counted in our statistics if it is CERTIFIED (case-insensitive). Other cases such as CERTIFIED-WITHDRAWN, DENIED, etc. are not counted.
-    - state (WORKSITE_STATE or LCA_CASE_WORKLOC1_STATE): two-letter state code of state where the work is expected to take place.
-    - occupation (SOC_NAME or LCA_CASE_SOC_NAME): occupation name
+    - case status (name is `CASE_STATUS` or `STATUS`): a visa application is only counted in our statistics if it is CERTIFIED (case-insensitive). Other cases such as `CERTIFIED-WITHDRAWN`, `DENIED`, etc. are not counted.
+    - state (`WORKSITE_STATE` or `LCA_CASE_WORKLOC1_STATE`): two-letter state code of state where the work is expected to take place.
+    - occupation (`SOC_NAME` or `LCA_CASE_SOC_NAME`): occupation name
 
     If those fields are not found in the first line of the file, the script will exit.
 
