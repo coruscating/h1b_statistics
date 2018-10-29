@@ -1,3 +1,10 @@
+# Table of Contents
+1. [Problem](README.md#problem)
+2. [Approach](README.md#approach)
+3. [Run](README.md#run)
+4. [Adding input files](README.md#adding-input-files)
+5. [Issues and considerations](README.md#issues-and-considerations)
+
 # Problem
 
 Given H1B disclosure files in semicolon-separated plaintext format (from disclosure data [here](https://www.foreignlaborcert.doleta.gov/performancedata.cfm), this code will count the top 10 states and top 10 occupations for certified visas.
