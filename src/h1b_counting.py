@@ -4,22 +4,26 @@ import math
 import traceback
 
 # October 28-29, 2018, Helena Zhang
-# written and tested with Python 2.7.10
+# written and tested in Python 2.7.10
 
-# this script takes in a CSV file and outputs two files, top_10_occupations.txt and top_10_states.txt. Check README.md for more information.
+# This script takes in a CSV file and outputs two files, top_10_occupations.txt and top_10_states.txt.
+# Check README.md for more information.
 
+############################################
 # EDITABLE PARAMETERS
-
+#
 # by default, program will generate top 10 rankings. To change the number, edit below:
 numrankings=10
 
-# Possible aliases for the three fields we care about are listed below. If your dataset has a different name, add it to the corresponding list.
+# Possible aliases for the three fields we care about are listed below.
+# If your dataset has a different column name for one of the fields, add it to the corresponding list.
+
 statusnames=["CASE_STATUS","STATUS"]
 statenames=["WORKSITE_STATE", "LCA_CASE_WORKLOC1_STATE"]
 jobnames=["SOC_NAME","LCA_CASE_SOC_NAME"]
 
 # END OF EDITABLE PARAMETERS
-
+############################################
 
 
 inputfile=sys.argv[1]
@@ -84,10 +88,13 @@ def write_topfile(filetype, filename, datadict):
 
             # want to round percentages blindly (.05 always -> .1)
             fo.write("%s;%d;%.1f%%\n" %(maxkey, datadict[maxkey], math.floor(1000*datadict[maxkey]/total+0.5)/10))
+
+            # remove this key from the dictionary
             datadict.pop(maxkey)
-            if len(datadict)==0: # there are less than 10 entries
+            if len(datadict)==0: # there are less than 10 entries, we're done
                 break
         fo.close()
+        return 0
     except:
         print traceback.format_exc()
         sys.exit()
@@ -101,5 +108,4 @@ try:
 
 except:
     print traceback.format_exc()
-    #print "Error: can't open input file %s, exiting!" %(inputfile)
     sys.exit()
