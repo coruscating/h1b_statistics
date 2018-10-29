@@ -83,7 +83,7 @@ def write_topfile(filetype, filename, datadict):
             # want to round percentages blindly (.05 always -> .1)
             fo.write("%s;%d;%.1f%%\n" %(maxkey, datadict[maxkey], math.floor(1000*datadict[maxkey]/total+0.5)/10))
             datadict.pop(maxkey)
-            if len(states)==0: # there are less than 10 entries
+            if len(datadict)==0: # there are less than 10 entries
                 break
         fo.close()
     except:
