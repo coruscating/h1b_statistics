@@ -33,15 +33,15 @@ The code is structured as follows:
 
 2. Parses the rest of the file line-by-line, adding each count of occupation/state as an entry to dictionaries, using the occupation/state name as the key and the number of occurences as the value. Using the example file, the dictionary for states is:
 
-```
-{'MD': 1, 'NJ': 1, 'WA': 1, 'TX': 1, 'CA': 1, 'DE': 1, 'AL': 1, 'GA': 1, 'FL': 2}
-```
+    ```
+    {'MD': 1, 'NJ': 1, 'WA': 1, 'TX': 1, 'CA': 1, 'DE': 1, 'AL': 1, 'GA': 1, 'FL': 2}
+    ```
 
-and for occupations:
+    and for occupations:
 
-```
-{'DATABASE ADMINISTRATORS': 1, 'ACCOUNTANTS AND AUDITORS': 1, 'SOFTWARE DEVELOPERS, APPLICATIONS': 6, 'COMPUTER OCCUPATIONS, ALL OTHER': 1, 'COMPUTER SYSTEMS ANALYST': 1}
-```
+    ```
+    {'DATABASE ADMINISTRATORS': 1, 'ACCOUNTANTS AND AUDITORS': 1, 'SOFTWARE DEVELOPERS, APPLICATIONS': 6, 'COMPUTER OCCUPATIONS, ALL OTHER': 1, 'COMPUTER SYSTEMS ANALYST': 1}
+    ```
 
 3. The top 10 results are counted (breaking ties alphabetically by occupation/state name), and the name, number, and percentage of total certified applications (rounded to the nearest 0.1%) are written, semicolon-separated, to the output files.
 
