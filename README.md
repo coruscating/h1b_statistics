@@ -8,7 +8,7 @@ All code is contained in `h1b_parse.py`, which is written and tested in Python 2
 
 1. Looks in the semicolon separated input file for the following three fields, which have different names in different versions of the disclosure files:
 
-    - case status (name is __`CASE_STATUS`__ or __`STATUS`__): a visa application is only counted in our statistics if the status value is exactly __``CERTIFIED`__ (case-insensitive). Other cases such as __`CERTIFIED-WITHDRAWN`__, __`DENIED`__, etc. are not counted.
+    - case status (name is __`CASE_STATUS`__ or __`STATUS`__): a visa application is only counted in our statistics if the status value is exactly __`CERTIFIED`__ (case-insensitive). Other cases such as __`CERTIFIED-WITHDRAWN`__, __`DENIED`__, etc. are not counted.
     - state (__`WORKSITE_STATE`__ or __`LCA_CASE_WORKLOC1_STATE`__): two-letter state code of state where the work is expected to take place.
     - occupation (__`SOC_NAME`__ or __`LCA_CASE_SOC_NAME`__): occupation name
 
