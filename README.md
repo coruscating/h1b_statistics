@@ -1,17 +1,16 @@
-
 # Problem
 
 Given H1B disclosure files in semicolon-separated plaintext format, this code will count the top 10 states and top 10 occupations for certified visas.
 
 # Approach
 
-All code is contained in h1b_parse.py, which is written and tested in Python 2.7.10. It takes the input filename, output top 10 occupation filename, and output top 10 state filename as arguments.
+All code is contained in `h1b_parse.py`, which is written and tested in Python 2.7.10. It takes the input filename, output top 10 occupation filename, and output top 10 state filename as arguments.
 
 It looks in the semicolon separated input file for the following three fields, which have different names in different versions of the disclosure files:
 
--case status (name is CASE_STATUS or STATUS): a visa application is only counted in our statistics if it is CERTIFIED (case-insensitive). Other cases such as CERTIFIED-WITHDRAWN, DENIED, etc. are not counted.
--state (WORKSITE_STATE or LCA_CASE_WORKLOC1_STATE): two-letter state code of state where the work is expected to take place.
--occupation (SOC_NAME or LCA_CASE_SOC_NAME): occupation name
+- case status (name is CASE_STATUS or STATUS): a visa application is only counted in our statistics if it is CERTIFIED (case-insensitive). Other cases such as CERTIFIED-WITHDRAWN, DENIED, etc. are not counted.
+- state (WORKSITE_STATE or LCA_CASE_WORKLOC1_STATE): two-letter state code of state where the work is expected to take place.
+- occupation (SOC_NAME or LCA_CASE_SOC_NAME): occupation name
 
 If those fields are not found in the first line of the file, the script will exit. Next, it parses the rest of the file line-by-line, adding each count of occupation/state as an entry to dictionaries, using the occupation/state name as the key and the number of occurences as the value. At the end, the top 10 results are counted (breaking ties alphabetically by occupation/state name), and the name, number, and percentage of total certified applications (rounded to the nearest 0.1%) are written, semicolon-separated, to the output files.
 
@@ -74,4 +73,4 @@ will read from `./insight_testsuite/test_FY_2014/input/h1b_input.csv` and output
 
 # Issues and considerations
 
--The CSV file is assumed to be well-formed, with no semicolons other than as column separators. If more rigorous input checks are desired, the [csv](https://docs.python.org/2/library/csv.html) library has an easy way to escape separators.
+- The CSV input file is assumed to be well-formed, with no semicolons other than as column separators. If more rigorous input checks are desired, the [csv](https://docs.python.org/2/library/csv.html) library has an easy way to escape separators.
