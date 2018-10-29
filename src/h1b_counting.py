@@ -12,6 +12,9 @@ import traceback
 ############################################
 # EDITABLE PARAMETERS
 #
+# to get verbose messages, set DEBUG to True
+DEBUG=False
+
 # by default, program will generate top 10 rankings. To change the number, edit below:
 numrankings=10
 
@@ -26,9 +29,18 @@ jobnames=["SOC_NAME","LCA_CASE_SOC_NAME"]
 ############################################
 
 
+if (len(sys.argv) != 4 and len(sys.argv) != 5):
+    print "Wrong number of arguments, exiting! Please run via run.sh."
+    sys.exit()
+
 inputfile=sys.argv[1]
 statefile=sys.argv[2]
 occupationfile=sys.argv[3]
+if(len(sys.argv)==5): DEBUG=sys.argv[4]
+
+if DEBUG: print ("Debug is on\ninput file: %s \noutput occupation file: %s\noutput state file: %s\n"%(inputfile, occupationfile, statefile))
+else:
+    print "Debug is off"
 
 fields=[statusnames, statenames, jobnames]
 
@@ -50,6 +62,7 @@ def read_h1bfile():
             if (len(fieldindices) != 3):
                 print "Didn't find all three fields, exiting!"
                 sys.exit()
+            if DEBUG: print "field indices [status, state, occupation]: ", fieldindices
             for l in f: # this handles large files better than readlines()
                 l2=l.split(";")
 
@@ -80,6 +93,7 @@ def write_topfile(filetype, filename, datadict):
     try:
         total=sum(datadict.values()) # total number of certified cases, should be the same in both cases
         fo=open(filename, "w")
+        if DEBUG: print("\n%s\nTOP_%s;NUMBER_CERTIFIED_APPLICATIONS;PERCENTAGE" %(filename, filetype))
         fo.write("TOP_%s;NUMBER_CERTIFIED_APPLICATIONS;PERCENTAGE\n" %(filetype))
         for i in range(numrankings):
 
@@ -88,7 +102,7 @@ def write_topfile(filetype, filename, datadict):
 
             # want to round percentages blindly (.05 always -> .1)
             fo.write("%s;%d;%.1f%%\n" %(maxkey, datadict[maxkey], math.floor(1000*datadict[maxkey]/total+0.5)/10))
-
+            if DEBUG: print("%s;%d;%.1f%%" %(maxkey, datadict[maxkey], math.floor(1000*datadict[maxkey]/total+0.5)/10))
             # remove this key from the dictionary
             datadict.pop(maxkey)
             if len(datadict)==0: # there are less than 10 entries, we're done
@@ -103,6 +117,12 @@ def write_topfile(filetype, filename, datadict):
 
 try:
     [states, jobs]=read_h1bfile()
+    if DEBUG:
+        print "Some state dictionary entries:"
+        print dict(states.items()[0:min(10,len(states))])
+        print "\nSome occupation dictionary entries:"
+        print dict(jobs.items()[0:min(10,len(states))])
+
     write_topfile("OCCUPATIONS", occupationfile, states)
     write_topfile("STATES", statefile, jobs)
 

@@ -4,21 +4,8 @@ Given H1B disclosure files in semicolon-separated plaintext format (from disclos
 
 # Approach
 
-All code is contained in `h1b_parse.py`, which is written and tested in Python 2.7.10. It takes the input filename, output top 10 occupation filename, and output top 10 state filename as arguments. The code is structured as follows:
+All code is contained in `h1b_parse.py`, which is written and tested in Python 2.7.10. It takes the input filename, output top 10 occupation filename, and output top 10 state filename as arguments. By default it does not print any output, but debug can be switched on in the header. The input file (using `input/h1b_input.csv` as an example) should have the following format, with one visa application per line: 
 
-1. Looks in the semicolon separated input file for the following three fields, which have different names in different versions of the disclosure files:
-
-    - case status (name __`CASE_STATUS`__ or __`STATUS`__): a visa application is only counted in our statistics if the status value is exactly __`CERTIFIED`__ (case-insensitive). Other cases such as __`CERTIFIED-WITHDRAWN`__, __`DENIED`__, etc. are not counted.
-    - state (name __`WORKSITE_STATE`__ or __`LCA_CASE_WORKLOC1_STATE`__): two-letter state code of state where the work is expected to take place.
-    - occupation (name __`SOC_NAME`__ or __`LCA_CASE_SOC_NAME`__): Standard Occupational Classification (SOC) name of occupation
-
-    If those fields are not found in the first line of the file, the script will exit.
-
-2. Parses the rest of the file line-by-line, adding each count of occupation/state as an entry to dictionaries, using the occupation/state name as the key and the number of occurences as the value.
-
-3. The top 10 results are counted (breaking ties alphabetically by occupation/state name), and the name, number, and percentage of total certified applications (rounded to the nearest 0.1%) are written, semicolon-separated, to the output files.
-
-Taking this input file `input/h1b_input.csv` as an example: 
 ```
 ;CASE_NUMBER;CASE_STATUS;CASE_SUBMITTED;DECISION_DATE;VISA_CLASS;EMPLOYMENT_START_DATE;EMPLOYMENT_END_DATE;EMPLOYER_NAME;EMPLOYER_BUSINESS_DBA;EMPLOYER_ADDRESS;EMPLOYER_CITY;EMPLOYER_STATE;EMPLOYER_POSTAL_CODE;EMPLOYER_COUNTRY;EMPLOYER_PROVINCE;EMPLOYER_PHONE;EMPLOYER_PHONE_EXT;AGENT_REPRESENTING_EMPLOYER;AGENT_ATTORNEY_NAME;AGENT_ATTORNEY_CITY;AGENT_ATTORNEY_STATE;JOB_TITLE;SOC_CODE;SOC_NAME;NAICS_CODE;TOTAL_WORKERS;NEW_EMPLOYMENT;CONTINUED_EMPLOYMENT;CHANGE_PREVIOUS_EMPLOYMENT;NEW_CONCURRENT_EMP;CHANGE_EMPLOYER;AMENDED_PETITION;FULL_TIME_POSITION;PREVAILING_WAGE;PW_UNIT_OF_PAY;PW_WAGE_LEVEL;PW_SOURCE;PW_SOURCE_YEAR;PW_SOURCE_OTHER;WAGE_RATE_OF_PAY_FROM;WAGE_RATE_OF_PAY_TO;WAGE_UNIT_OF_PAY;H1B_DEPENDENT;WILLFUL_VIOLATOR;SUPPORT_H1B;LABOR_CON_AGREE;PUBLIC_DISCLOSURE_LOCATION;WORKSITE_CITY;WORKSITE_COUNTY;WORKSITE_STATE;WORKSITE_POSTAL_CODE;ORIGINAL_CERT_DATE
 0;I-200-18026-338377;CERTIFIED;2018-01-29;2018-02-02;H-1B;2018-07-28;2021-07-27;MICROSOFT CORPORATION;;1 MICROSOFT WAY;REDMOND;WA;98052;UNITED STATES OF AMERICA;;4258828080;;N;",";;;SOFTWARE ENGINEER;15-1132;"SOFTWARE DEVELOPERS, APPLICATIONS";51121.0;1;0;1;0;0;0;0;Y;112549.0;Year;Level II;OES;2017.0;OFLC ONLINE DATA CENTER;143915.0;0.0;Year;N;N;;;;REDMOND;KING;WA;98052;
@@ -33,7 +20,33 @@ Taking this input file `input/h1b_input.csv` as an example:
 9;I-200-18233-239931;CERTIFIED;2018-08-21;2018-08-27;H-1B;2018-09-05;2021-09-04;"WB SOLUTIONS, LLC";;7320 E FLETCHER AVE;TAMPA;FL;33637;UNITED STATES OF AMERICA;;8133300099;;Y;"KIDAMBI, VAMAN";TRUMBULL;CT;SENIOR JAVA DEVELOPER;15-1132;"SOFTWARE DEVELOPERS, APPLICATIONS";541511.0;1;0;0;0;0;1;0;Y;104790.0;Year;Level III;OES;2018.0;OFLC ONLINE DATA CENTER;105000.0;0.0;Year;Y;N;Y;Y;;ALPHARETTA;FULTON;GA;30005;
 ```
 
-`h1b_parse.py` will output the folowing files:
+
+The code is structured as follows:
+
+1. Looks in the semicolon separated input file for the following three fields, which have different names in different versions of the disclosure files:
+
+    - case status (name __`CASE_STATUS`__ or __`STATUS`__): a visa application is only counted in our statistics if the status value is exactly __`CERTIFIED`__ (case-insensitive). Other cases such as __`CERTIFIED-WITHDRAWN`__, __`DENIED`__, etc. are not counted.
+    - state (name __`WORKSITE_STATE`__ or __`LCA_CASE_WORKLOC1_STATE`__): two-letter state code of state where the work is expected to take place.
+    - occupation (name __`SOC_NAME`__ or __`LCA_CASE_SOC_NAME`__): Standard Occupational Classification (SOC) name of occupation
+
+    If those fields are not found in the first line of the file, the script will exit.
+
+2. Parses the rest of the file line-by-line, adding each count of occupation/state as an entry to dictionaries, using the occupation/state name as the key and the number of occurences as the value. Using the example file, the dictionary for states is:
+
+```
+{'MD': 1, 'NJ': 1, 'WA': 1, 'TX': 1, 'CA': 1, 'DE': 1, 'AL': 1, 'GA': 1, 'FL': 2}
+```
+
+and for occupations:
+
+```
+{'DATABASE ADMINISTRATORS': 1, 'ACCOUNTANTS AND AUDITORS': 1, 'SOFTWARE DEVELOPERS, APPLICATIONS': 6, 'COMPUTER OCCUPATIONS, ALL OTHER': 1, 'COMPUTER SYSTEMS ANALYST': 1}
+```
+
+3. The top 10 results are counted (breaking ties alphabetically by occupation/state name), and the name, number, and percentage of total certified applications (rounded to the nearest 0.1%) are written, semicolon-separated, to the output files.
+
+ 
+The final output of `h1b_parse.py` given the example input:
 
 `./output/top_10_occupations.txt`:
 ```
@@ -66,11 +79,10 @@ To run the code, execute `run.sh` in the base directory and it will use default 
 ```
 ./run.sh
 ```
-
-Alternatively, any of the testsuites in the `insight_testsuite` folder can be run by giving the test name as an argument to `run.sh` and the output files will be generated under the `output` directory under that test folder.
+To print debugging, use the flag `-d`. Any of the testsuites in the `insight_testsuite` folder can be run by using the flag `-t` and the test name as an argument to `run.sh`. The output files will be generated under the `output` directory under that test folder:
 
 ```
-./run.sh test_FY_2014
+./run.sh -d -t test_FY_2014
 ```
 
 will read from `./insight_testsuite/test_FY_2014/input/h1b_input.csv` and output to `./insight_testsuite/test_FY_2014/output/top_10_occupations.txt` and `./insight_testsuite/test_FY_2014/output/top_10_states.txt`.
@@ -88,7 +100,8 @@ then rename the file as `h1b_input.csv` in the corresponding test folder.
 
 # Issues and considerations
 
-- The CSV input file is assumed to be well-formed, with no semicolons other than as column separators. If more rigorous input checks are desired, the [csv](https://docs.python.org/2/library/csv.html) library has an easy way to escape separators.
+- The CSV input file is assumed to be well-formed, with no semicolons other than as column separators and no special characters. If more rigorous input checks are desired, special characters can be checked for and the [csv](https://docs.python.org/2/library/csv.html) library has an easy way to escape separators.
 - To add more field names or change the number of rankings, edit the EDITABLE PARAMETERS section of `h1b_counting.py`. To change the values that are considered certified, edit the marked if statement in `read_h1bfile()`.
 - A progress bar is not included because the code runs quickly (~fewer than 10 seconds for all test cases on a modern computer), but would be an easy addition.
 - Only the __`LCA_CASE_WORKLOC1_STATE`__ is considered for files with that format, not __`LCA_CASE_WORKLOC2_STATE`__, so that there is one unique state for each application.
+- Some lines have incorrect fields. For example, a city instead of state in the state field or a blank for occupation. This requires more detailed analysis of why the lines are malformed and if the data can be recovered (for example, the fields of interest may be shifted over by one). This analysis is not done in the current code in order to not go beyond the boundaries of the challenge.
